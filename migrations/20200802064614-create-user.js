@@ -12,6 +12,7 @@ module.exports = {
             nickname: {
                 type: Sequelize.STRING,
                 allowNull: false,
+                unique: true
             },
             avatar: {
                 type: Sequelize.STRING

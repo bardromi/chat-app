@@ -11,16 +11,15 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const userNickName = req.body.nickname;
-    console.log(req.body.nickname);
-    const users = await User.findAll({
+
+    let user = await User.findOne({
         where: {nickname: userNickName},
     });
 
-    const user = users[0];
     if (!user) {
-        await User.create({nickname: userNickName});
+        user = await User.create({nickname: userNickName});
     }
-    res.send(users);
+    res.send(user);
 })
 
 router.delete('/:id', async (req, res) => {
