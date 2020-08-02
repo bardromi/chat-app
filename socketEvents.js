@@ -14,10 +14,10 @@ const socketEvents = (io) => {
         });
 
         socket.on("message", async data => {
-            const {author, message} = data;
+            const {author_id, message} = data;
             console.log(data);
             await models.Message.create({
-                author,
+                author_id: author_id,
                 message: message,
             });
 
