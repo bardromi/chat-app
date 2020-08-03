@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const User = require('../models').User;
 const {getUsers, getUserByNickName, createUser, deleteUser} = require('../controllers/usersController')
 
 
@@ -13,19 +14,30 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const userNickName = req.body.nickname;
 
-    let user = getUserByNickName(userNickName);
+    let user = await getUserByNickName(userNickName);
 
     if (!user) {
-        user = createUser(userNickName);
+        user = await createUser(userNickName);
+    } else {
+        res.send({
+            data: "",
+            success: false,
+            message: "user already exist"
+        })
+        return;
     }
 
-    res.send(user);
+    res.send({
+        data: user,
+        success: true,
+        message: ""
+    });
 })
 
 router.delete('/:id', async (req, res) => {
     const id = req.params.id;
 
-    const user = deleteUser(id);
+    const user = await deleteUser(id);
 
     if (!user) {
         res.send({

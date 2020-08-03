@@ -8,9 +8,9 @@ const socketEvents = (io) => {
             console.log(`SocketId: ${socket.id} disconnected`)
         })
 
-        socket.on("join", async room => {
-            socket.join(room);
-            io.emit("roomJoined", room);
+        socket.on("join", async nickname => {
+            console.log("nickname", nickname);
+            io.emit("roomJoined", nickname);
         });
 
         socket.on("message", async data => {

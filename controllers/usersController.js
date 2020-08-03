@@ -4,14 +4,14 @@ async function getUsers() {
     return await User.findAll();
 }
 
-async function getUserByNickName(nickName) {
+async function getUserByNickName(userNickName) {
     return await User.findOne({
-        where: {nickName: nickName},
+        where: {nickName: userNickName},
     });
 }
 
-async function createUser(nickName) {
-    return await User.create({nickName: nickName});
+async function createUser(userNickName) {
+    return await User.create({nickname: userNickName});
 }
 
 async function deleteUser(id) {
