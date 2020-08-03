@@ -8,9 +8,10 @@ const socketEvents = (io) => {
             console.log(`SocketId: ${socket.id} disconnected`)
         })
 
-        socket.on("join", async nickname => {
-            console.log("nickname", nickname);
-            io.emit("roomJoined", nickname);
+        socket.on("join", async (user) => {
+            console.log("user", user);
+            const response = new Date();
+            io.emit("chatJoin", response);
         });
 
         socket.on("message", async data => {
@@ -25,6 +26,12 @@ const socketEvents = (io) => {
                 limit: 10,
             });
             io.emit("latestMessages", latestMessages);
+        });
+
+        socket.on("test", async data => {
+            console.log(data);
+
+            io.emit("latestMessages", "stam");
         });
 
         //broadcast new message to all sockets
