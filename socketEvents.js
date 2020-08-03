@@ -10,8 +10,18 @@ const socketEvents = (io) => {
 
         socket.on("join", async (user) => {
             console.log("user", user);
-            const response = new Date();
-            io.emit("chatJoin", response);
+            const date = new Date();
+            const latestMessages = await models.Message.findAll({
+                include: [
+                    {model: models.User}
+                ],
+                limit: 10,
+            });
+            io.emit("chatJoin", {
+                user_id: user.id,
+                date,
+                messages: latestMessages
+            });
         });
 
         socket.on("message", async data => {
