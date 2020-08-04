@@ -1,4 +1,6 @@
 const models = require("./models");
+const {createMessage} = require("./controllers/messagesController");
+const {getLatestMessagesUserIncluded} = require("./controllers/messagesController");
 
 const socketEvents = (io) => {
     io.on('connection', (socket) => {
@@ -10,12 +12,9 @@ const socketEvents = (io) => {
 
         socket.on("join", async (user) => {
             const date = new Date();
-            const latestMessages = await models.Message.findAll({
-                include: [
-                    {model: models.User}
-                ],
-                limit: 10,
-            });
+
+            const latestMessages = await getLatestMessagesUserIncluded(10);
+
             io.emit("chatJoin", {
                 user_id: user.id,
                 date,
@@ -23,28 +22,18 @@ const socketEvents = (io) => {
             });
         });
 
-        socket.on("message", async data => {
+        socket.on("message", async messageData => {
             const date = new Date();
-            const {author_id, message} = data;
 
-            await models.Message.create({
-                author_id: author_id,
-                message: message,
-            });
+            await createMessage(messageData);
 
-            const latestMessages = await models.Message.findAll({
-                include: [
-                    {model: models.User}
-                ],
-                order: [
-                    ['createdAt', 'DESC'],
-                ],
-            });
+            const latestMessages = await getLatestMessagesUserIncluded();
+
 
             latestMessages.reverse();
 
             io.emit("latestMessages", {
-                user_id: author_id,
+                user_id: messageData.author_id,
                 date,
                 messages: latestMessages
             });
@@ -55,11 +44,6 @@ const socketEvents = (io) => {
 
             io.emit("latestMessages", "stam");
         });
-
-        //broadcast new message to all sockets
-        // socket.on('newMessage', (newMessage) => {
-        //     socket.broadcast.emit('addMessage', newMessage)
-        // })
     });
 
 
