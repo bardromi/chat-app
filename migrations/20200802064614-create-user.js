@@ -15,7 +15,12 @@ module.exports = {
                 unique: true
             },
             avatar: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+            color: {
+                type: Sequelize.STRING,
+                allowNull: false,
             },
             createdAt: {
                 allowNull: false,

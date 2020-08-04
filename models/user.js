@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
             unique: true,
             type: DataTypes.STRING
         },
-        avatar: DataTypes.STRING
+        avatar: DataTypes.STRING,
+        color: DataTypes.STRING
     }, {
         sequelize,
         modelName: 'User',

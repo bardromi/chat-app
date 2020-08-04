@@ -11,32 +11,21 @@ const socketEvents = (io) => {
         })
 
         socket.on("join", async (user) => {
-            const date = new Date();
-
             const latestMessages = await getLatestMessagesUserIncluded(10);
 
-            io.emit("chatJoin", {
-                user_id: user.id,
-                date,
-                messages: latestMessages
-            });
+            latestMessages.reverse();
+
+            io.emit("chatJoin", latestMessages);
         });
 
         socket.on("message", async messageData => {
-            const date = new Date();
-
             await createMessage(messageData);
 
             const latestMessages = await getLatestMessagesUserIncluded();
 
-
             latestMessages.reverse();
 
-            io.emit("latestMessages", {
-                user_id: messageData.author_id,
-                date,
-                messages: latestMessages
-            });
+            io.emit("latestMessages", latestMessages);
         });
 
         socket.on("test", async data => {
