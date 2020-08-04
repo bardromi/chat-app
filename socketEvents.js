@@ -9,7 +9,6 @@ const socketEvents = (io) => {
         })
 
         socket.on("join", async (user) => {
-            console.log("user", user);
             const date = new Date();
             const latestMessages = await models.Message.findAll({
                 include: [
@@ -25,17 +24,30 @@ const socketEvents = (io) => {
         });
 
         socket.on("message", async data => {
+            const date = new Date();
             const {author_id, message} = data;
-            console.log(data);
+
             await models.Message.create({
                 author_id: author_id,
                 message: message,
             });
 
             const latestMessages = await models.Message.findAll({
-                limit: 10,
+                include: [
+                    {model: models.User}
+                ],
+                order: [
+                    ['createdAt', 'DESC'],
+                ],
             });
-            io.emit("latestMessages", latestMessages);
+
+            latestMessages.reverse();
+
+            io.emit("latestMessages", {
+                user_id: author_id,
+                date,
+                messages: latestMessages
+            });
         });
 
         socket.on("test", async data => {
