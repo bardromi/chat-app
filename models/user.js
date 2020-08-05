@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            models.User.hasMany(models.Message, {as: 'UserId', foreignKey: 'author_id', onDelete: 'cascade'});
+            models.User.hasMany(models.Message, {as: 'UserId', foreignKey: 'author_id'});
         }
     }
 
@@ -20,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
         },
         avatar: DataTypes.STRING,
-        color: DataTypes.STRING
+        color: DataTypes.STRING,
+        socket_id: DataTypes.STRING
     }, {
         sequelize,
         modelName: 'User',

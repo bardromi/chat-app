@@ -19,6 +19,13 @@ async function getUserByNickName(userNickName) {
     });
 }
 
+async function addSocketId(userId, socketId) {
+    return await User.update(
+        {socket_id: socketId},
+        {where: {id: userId}}
+    );
+}
+
 async function createUser(userNickName) {
     return await User.create({
         nickname: userNickName,
@@ -33,9 +40,17 @@ async function deleteUser(id) {
     });
 }
 
+async function deleteUserBySocketID(socketId) {
+    return await User.destroy({
+        where: {socket_id: socketId}
+    });
+}
+
 module.exports = {
     getUsers,
     getUserByNickName,
     createUser,
-    deleteUser
+    deleteUser,
+    addSocketId,
+    deleteUserBySocketID
 }

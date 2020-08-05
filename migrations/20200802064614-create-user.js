@@ -7,7 +7,7 @@ module.exports = {
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER,
-                onDelete: 'cascade'
+                // onDelete: 'cascade'
             },
             nickname: {
                 type: Sequelize.STRING,
@@ -17,6 +17,9 @@ module.exports = {
             avatar: {
                 type: Sequelize.STRING,
                 allowNull: false,
+            },
+            socket_id:{
+                type:Sequelize.STRING
             },
             color: {
                 type: Sequelize.STRING,

@@ -13,7 +13,8 @@ module.exports = {
                 references: {
                     model: 'Users',
                     key: 'id'
-                }
+                },
+                onDelete: 'cascade'
             },
             message: {
                 type: Sequelize.TEXT
